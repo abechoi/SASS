@@ -1,0 +1,72 @@
+@import './resets';
+@import './variables';
+
+
+ // Create weight() function.
+ // map-get( font-weights, bold); => weight(bold);
+@function weight($weight-name){
+    @return map-get($font-weights, $weight-name );
+}
+
+// Call : @include flexCenter(row || column) to change flex-direction.
+@mixin flexCenter($direction) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
+// Call : @include theme(true) for light theme.
+@mixin theme($light-theme: true){
+    @if $light-theme{
+        background: lighten($primary-color, 100%);
+        color: darken($text-color, 100%);
+    }
+}
+
+// Call : @include mobile{ css }.
+// If width <= 800, css is true.
+@mixin mobile{
+    @media (max-width: $mobile){
+        @content;
+    }
+}
+
+body{
+    background: $primary-color;
+    color: $text-color;
+}
+
+.main{
+    
+    @include flexCenter(row);
+    width: 80% - 40%; // operators, width: calc(80% - 40%);
+    margin: 0 auto;
+
+    #{&}__paragraph1{
+        font-weight: weight(bold);
+
+        &:hover{
+            color: pink;
+        }
+    }
+
+    // Extensions : Takes css from .main__paragraph1.
+    #{&}__paragraph2{
+        @extend .main__paragraph1;
+
+        &:hover{
+            color: $accent-color;
+        }
+    }
+
+    @include mobile{
+        flex-direction: column;
+    }
+}
+
+
+
+.light{
+    @include theme(true);
+}
